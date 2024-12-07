@@ -1,0 +1,61 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Music Recommendation System </title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+  </head>
+  <body style="background:#B266FF; color:Black;">
+ <a href="{{ url_for('astar_page') }}" class="btn btn-secondary" style="float: right; margin-top: 10px;">Mood Changing Playlist</a>
+
+    <div class="container">
+        <h2 class="text-center">Music Recommendation System</h2>
+        <form action="/recom" method="post">
+            <div class="form-group">
+                <lable for="text">Select Song</lable>
+                <select name="genre" id="genre" class="form-control">
+                     {% for genre in genres %}
+                <option value="{{ genre }}" {% if selected_genre == genre %}selected{% endif %}>
+                    {{ genre }}
+                </option>
+            {% endfor %}
+
+                </select>
+            </div>
+            <div class="form-group mt-3">
+        <label for="sort_order">Sort by Rating</label>
+        <select name="sort_order" id="sort_order" class="form-control">
+            <option value="" {% if not selected_sort %}selected{% endif %}>Default</option>
+            <option value="Descending" {% if selected_sort =="Descending" %}selected{% endif %}>Highest First</option>
+            <option value="Ascending" {% if selected_sort == "Ascending" %}selected{% endif %}>Lowest First</option>
+        </select>
+
+    </div>
+
+            <button style="margin-top:20px;" type="submit" class="btn btn-primary btn-lg">Recommendation</button>
+        </form>
+<div class="row mt-4">
+            {% if songs %}
+                {% for song in songs %}
+                    <div class="card m-2" style="width: 18rem;">
+                        <img src="{{ url_for('static', filename='Headphone.png') }}" class="card-img-top" alt="Song Image">
+                        <div class="card-body">
+                            <h5 class="card-title">{{ song['Song-Name'] }}</h5>
+                            <p class="card-text">
+                                Artist: {{ song['Singer/Artists'] }}<br>
+                                Album: {{ song['Album/Movie'] }}<br>
+                                Rating: {{ song['User-Rating'] }}
+                            </p>
+                        </div>
+                    </div>
+                {% endfor %}
+            {% else %}
+                <p class="text-center">No recommendations available.</p>
+            {% endif %}
+        </div>
+        </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+  </body>
+</html>
